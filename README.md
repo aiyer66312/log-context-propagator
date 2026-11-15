@@ -42,3 +42,10 @@ console.log(context);       // the scoped Context value
 - `mergeContext(ctx)` — flatten the chain into a plain object; nearest layer wins.
 - `runInContext(ctx, fn)` — call `fn(ctx)` and return `{ result, context }`. `fn` must return that shape.
 - `makeLogger(ctx, { sink, level })` — returns `{ context, log }`. `log(message, extra?)` emits a merged record and returns the context unchanged.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
